@@ -33,6 +33,12 @@ Vec2f::operator*=(float scalar) {
 	x *= scalar;
 	y *= scalar;
 }
+void
+Vec2f::operator/=(float scalar) {
+	x /= scalar;
+	y /= scalar;
+}
+
 
 /*
  * Position2d
@@ -46,25 +52,25 @@ Position2d::Position2d(const Point2d &pt, float angle) : pt(pt) {
 }
 
 /*
- * AxisAlignedRectangle
+ * AxisAlignedBoundingRectangle
  */
-AxisAlignedRectangle::AxisAlignedRectangle(float x, float y, float w, float h) :
+AxisAlignedBoundingRectangle::AxisAlignedBoundingRectangle(float x, float y, float w, float h) :
 	min(x, y),
 	max(x + w, y + h)
 {
 }
 
-AxisAlignedRectangle::AxisAlignedRectangle(const Point2d &min, const Point2d &max) : min(min), max(max) {
+AxisAlignedBoundingRectangle::AxisAlignedBoundingRectangle(const Point2d &min, const Point2d &max) : min(min), max(max) {
 }
 
 void
-AxisAlignedRectangle::operator+=(const Vec2f &v) {
+AxisAlignedBoundingRectangle::operator+=(const Vec2f &v) {
 	min += v;
 	max += v;
 }
 
 void
-AxisAlignedRectangle::operator-=(const Vec2f &v) {
+AxisAlignedBoundingRectangle::operator-=(const Vec2f &v) {
 	min -= v;
 	max -= v;
 }
