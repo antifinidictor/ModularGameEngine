@@ -30,7 +30,8 @@
  */
 
 #include <vector>
-#include <set>
+#include <map>
+#include "basicTypes.h"
 
 class GameObject;
 
@@ -43,27 +44,33 @@ public:
 		s_instance = new ModularGameEngine(ae, pe, re);
 	}
 
+    /** Cleans the game: Deletes all objects and engines */
 	static void clean() {
 		delete s_instance;
 		s_instance = NULL;
 	}
 
-	void run() {
-		//Future editions may use multithreading
+    /** Starts the main game loop */
+	static void run() {
+	    if(!m_isRunning) {
+            m_isRunning = true;
+            s_instance->_run();
+	    }
 	}
 
 	//Publically permissable
-	static inline ModularGameEngine *get() { return m_instance; }   /**< gets MGE instance */
-	static inline AudioEngine   *AE() { return ae; }    /**< gets audio engine instance */
-	static inline PhysicsEngine *PE() { return pe; }    /**< gets physics engine instance */
-	static inline RenderEngine  *RE() { return re; }    /**< gets render engine instance */
+	static inline ModularGameEngine *get() { return s_instance; }   /**< gets MGE instance */
+	static inline AudioEngine   *AE() { return s_instance->m_ae; }  /**< gets audio engine instance */
+	static inline PhysicsEngine *PE() { return s_instance->m_pe; }  /**< gets physics engine instance */
+	static inline RenderEngine  *RE() { return s_instance->m_re; }  /**< gets render engine instance */
+	static inline GameObjectFactory *FAC() { return &s_instance->m_fac; }   /**< gets object factory */
 
 	void kill() { m_isRunning = false; }    /**< ends the game */
 
 private:
 	//Helpers
 	ModularGameEngine(AudioEngine *ae, PhysicsEngine *pe, RenderEngine *re) {
-		m_isRunning = true;
+		m_isRunning = false;
 		m_ae = ae;
 		m_pe = pe;
 		m_re = re;
@@ -77,6 +84,13 @@ private:
 		m_ae = NULL;
 		m_pe = NULL;
 		m_re = NULL;
+	}
+
+    /** Actual main game loop */
+	void _run() {
+	    while(m_isRunning) {
+
+	    }
 	}
 
 	//Private types
@@ -96,6 +110,9 @@ private:
 	AudioEngine   *m_ae;
 	RenderEngine  *m_re;
 	PhysicsEngine *m_pe;
+
+    //non-pointer members
+	GameObjectFactory m_fac;
 	bool m_isRunning;
 };
 

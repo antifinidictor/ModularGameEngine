@@ -17,6 +17,9 @@
 class GameObject;
 
 class ObjectEngine {
+public:
+    virtual ~ObjectEngine() {}
+
 protected:
     friend ModularGameEngine;
 
